@@ -1,0 +1,24 @@
+version: "3"
+services:
+  app:
+    build: 
+      context: ..
+      dockerfile: ci/Dockerfile.local
+    image: fast_api_1
+    volumes:
+      - ../fastapi1:/fastapi1/fastapi1
+    ports:
+      - 8000:8000
+    env_file:
+      - .docker-env-local
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=LocalPassword
+      - POSTGRES_DB=fastapi-1

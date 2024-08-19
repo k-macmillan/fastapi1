@@ -1,0 +1,28 @@
+FROM python:3.11-alpine3.20
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PORT=8000 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_NO_INTERACTION=1 \
+    PATH="/.venv/bin:$PATH"
+
+# Add poetry home location to path
+ENV PATH="$POETRY_HOME/bin:$PATH"
+
+
+RUN apk add --no-cache bash build-base git postgresql-dev g++ make libffi-dev libmagic libcurl python3-dev openssl-dev curl-dev
+
+COPY ../pyproject.toml /
+
+# # RUN apk add --no-cache --virtual .build-deps gcc musl-dev rust cargo curl \
+RUN apk add --no-cache --virtual .build-deps cargo curl gcc musl-dev rust \
+    && curl -sSL https://install.python-poetry.org | python3 - \
+    && poetry install --no-root --no-ansi $POETRY_ARGS
+
+COPY ../scripts/run_app.sh fastapi1/
+
+WORKDIR /fastapi1
+
+ENTRYPOINT ./run_app.sh ${RELOAD}
+# CMD ["tail", "-f"]
