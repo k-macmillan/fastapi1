@@ -23,21 +23,23 @@ class TimestampMixin:
 
 ###################################################### CORE MODELS #####################################################
 
-class Notification(TimestampMixin, Base):
-    """Representation of the 'notifications' table."""
+# Commented out so the app can load
 
-    __tablename__ = "notifications"
-    model = NotificationResponse
+# class Notification(TimestampMixin, Base):
+#     """Representation of the 'notifications' table."""
 
-    # Add columns - id, sent_at, to, personalization
+#     __tablename__ = "notifications"
+#     model = NotificationResponse
 
-    def as_response(self) -> NotificationResponse:
-        """Overide for base class.
+#     # Add columns - id, sent_at, to, personalization
 
-        Returns
-        -------
-            NotificationResponse: Pydantic model for notification response
+#     def as_response(self) -> NotificationResponse:
+#         """Overide for base class.
 
-        """
-        # https://mypy.readthedocs.io/en/stable/common_issues.html#invariance-vs-covariance
-        return super().as_response()  # type: ignore
+#         Returns
+#         -------
+#             NotificationResponse: Pydantic model for notification response
+
+#         """
+#         # https://mypy.readthedocs.io/en/stable/common_issues.html#invariance-vs-covariance
+#         return super().as_response()  # type: ignore
